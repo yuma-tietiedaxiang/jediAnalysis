@@ -1,0 +1,114 @@
+---
+title: "Jedi Darkness Analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{jedi_analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Load packages and data
+
+```{r load}
+library(jediAnalysis)
+require(lme4)
+require(flexplot)
+d = jedi
+```
+
+## Baseline model
+
+Intercept-only model to estimate ICC — how much of the variation in darkness is due to dojo differences.
+
+```{r baseline}
+baseline = lmer(darkness ~ 1 + (1 | dojo_id), data = d)
+summary(baseline)
+```
+
+## Fixed anger effect
+
+Add anger as a fixed effect to test whether anger predicts darkness across all dojos.
+
+```{r fixed_anger}
+fixed_anger = lmer(darkness ~ 1 + anger + (1 | dojo_id), data = d)
+summary(fixed_anger)
+```
+
+## Random + fixed anger effect
+
+Allow the effect of anger to vary across dojos (random slope).
+
+```{r fixed_random_anger}
+fixed_random_anger = lmer(darkness ~ 1 + anger + (1 + anger | dojo_id), data = d)
+summary(fixed_random_anger)
+```
+
+## Main model: does emotional attachment increase darkness, controlling for anger?
+
+```{r main_model}
+model = lmer(darkness ~ anger + emotional_bonds +
+               (anger + emotional_bonds | dojo_id), data = d,
+             control = lmerControl(optimizer = "bobyqa"))
+summary(model)
+estimates(model)
+```
+
+## Visualise model predictions (overall)
+
+Shows the overall model-predicted relationship between predictors and darkness.
+
+```{r plot_overall}
+visualize(model, plot = "model")
+```
+
+## Visualise emotional bonds effect by anger level
+
+Shows how emotional_bonds predicts darkness at different levels of anger, across dojos.
+
+```{r plot_eb_anger}
+visualize(model, plot = "model",
+          formula = darkness ~ emotional_bonds + dojo_id | anger)
+```
+
+## Visualise emotional bonds across 30 sampled dojos
+
+Plots the emotional_bonds effect for a random sample of 30 dojos to avoid overplotting.
+
+```{r plot_eb_dojos}
+visualize(model, plot = "model",
+          formula = darkness ~ emotional_bonds + dojo_id, sample = 30)
+```
+
+## Visualise anger across 30 sampled dojos
+
+Plots the anger effect for a random sample of 30 dojos.
+
+```{r plot_anger_dojos}
+visualize(model, plot = "model",
+          formula = darkness ~ anger + dojo_id, sample = 30)
+```
+
+## Model comparison: is the random slope for anger necessary?
+
+Compare full model (random slopes for both) vs reduced model (random slope for emotional_bonds only).
+
+```{r model_comparison}
+reduced = lmer(darkness ~ emotional_bonds + anger + 
+                 (emotional_bonds | dojo_id), data = d,
+               control = lmerControl(optimizer = "bobyqa"))
+compare.fits(darkness ~ anger | emotional_bonds + dojo_id, 
+             data = d, model1 = model, model2 = reduced, re = T)
+model.comparison(model, reduced)
+```
+
+## Residual diagnostics
+
+Check model assumptions — residuals should be roughly normal and show no patterns.
+
+```{r residuals}
+visualize(model, plot = "residuals")
+```

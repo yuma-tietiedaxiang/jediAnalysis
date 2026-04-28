@@ -13,3 +13,7 @@ Depends:
 LazyData: true
 URL: https://github.com/yuma-tietiedaxiang/jediAnalysis
 BugReports: https://github.com/yuma-tietiedaxiang/jediAnalysis/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
