@@ -11,6 +11,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends: 
     R (>= 3.5)
+Imports:
+    lme4,
+    flexplot
+Remotes:
+    dustinfife/flexplot
 LazyData: true
 URL: https://github.com/yuma-tietiedaxiang/jediAnalysis
 BugReports: https://github.com/yuma-tietiedaxiang/jediAnalysis/issues
