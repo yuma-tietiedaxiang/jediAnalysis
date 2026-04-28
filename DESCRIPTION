@@ -1,9 +1,10 @@
 Package: jediAnalysis
-Title: What the Package Does (One Line, Title Case)
+Title: Mixed-effects model analysis
 Version: 0.0.0.9000
 Authors@R: 
     person("Yoma", "Ma", , "yoma.ma0405dev@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Description: Mixed-effects model analysis exploring whether anger and emotional 
+bonds predict darkness levels in Jedi apprentices across 95 dojos.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
