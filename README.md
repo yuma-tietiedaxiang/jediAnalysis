@@ -1,5 +1,7 @@
 # jediAnalysis
 
+[![R-CMD-check](https://github.com/yuma-tietiedaxiang/jediAnalysis/actions/workflows/r.yml/badge.svg)](https://github.com/yuma-tietiedaxiang/jediAnalysis/actions/workflows/r.yml)
+
 An R package for mixed-effects model analysis, built to explore whether psychological factors (anger, emotional bonds) predict outcome levels in a hierarchically structured dataset — 95 dojos, each containing multiple Jedi apprentices.
 
 > Full analysis vignette: https://rpubs.com/Yoma_dev/1427191  
