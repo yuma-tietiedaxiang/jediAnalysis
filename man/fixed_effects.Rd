@@ -23,6 +23,6 @@ since lme4 does not provide p-values by default.
 library(lme4)
 data("jedi")
 model = lmer(darkness ~ anger + (1 | dojo_id), data = jedi)
-summarize_fixed(model)
+fixed_effects(model)
 
 }
